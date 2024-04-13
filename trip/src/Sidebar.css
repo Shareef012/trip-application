@@ -11,7 +11,7 @@
     flex-direction: column;
     justify-content: flex-start; /* Align items at the top */
     position: fixed;
-    top: 100px;
+    top: 80px;
     left: 0;
   }
   
@@ -45,4 +45,25 @@
     font-weight: bold;
     background-color: #555; /* Optional: Highlight active link */
   }
+  .SideBar button {
+    margin-bottom: 35%;
+    width: 100%;
+  }
+  .SideBar button {
+    text-decoration: none;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: block; /* Ensure full clickable area for the link */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    transition: background-color 0.3s; /* Optional: Add transition effect */
+  }
   
+  .SideBar button:hover {
+    background-color: #555; /* Optional: Change background color on hover */
+  }
+  
+  .SideBar button.active {
+    font-weight: bold;
+    background-color: #555; /* Optional: Highlight active link */
+  }

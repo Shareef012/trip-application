@@ -1,7 +1,8 @@
 // Home.js
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import './Home.css';
-import {Link} from 'react-router-dom';
+
+
 export let items = [
   {
     id : "1",
@@ -56,6 +57,9 @@ const Home = () => {
   const [searchText, setSearchText] = useState('');
   const [filteredItems, setFilteredItems] = useState(items);
 
+
+ 
+
   const handleSearch = (e) => {
     const text = e.target.value;
     setSearchText(text);
@@ -66,6 +70,7 @@ const Home = () => {
     setFilteredItems(filteredArray);
   };
 
+  
   return (
     <div className="home">
       <form action="" method="">
@@ -75,22 +80,21 @@ const Home = () => {
           placeholder="Search the place..."
           value={searchText}
           onChange={handleSearch}
+          className='search-bar'
         />
-        <button name="search" id="search-button">
-          Search
-        </button>
+        
       </form>
 
       <div className="cards">
         {filteredItems.map((item) => (
           <div className="card" key={item.name}>
-            <Link key={items.id} to={`/plantrip/${item.name}`}>
             <img src={item.src} alt={item.name} />
-            </Link>
             <p>{item.name}</p>
           </div>
         ))}
       </div>
+
+      
     </div>
   );
 };

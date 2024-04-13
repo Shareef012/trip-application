@@ -15,7 +15,7 @@ const Logo = () => {
         <h1>SKS</h1>
       </div>
       <div className="right-content">
-        <Link to="/Signin">Sign In</Link>
+        <Link to="/signin">Sign In</Link>
       </div>
     </div>
   );

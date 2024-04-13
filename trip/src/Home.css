@@ -1,34 +1,31 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-/*form{
-   margin
+form{
+   
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
     flex-direction: column; 
-}*/
+    
+}
+
 *{
     margin-top: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins",sans-serif;
 }
-#search-bar{
-    margin-left: 35%;
-    padding: 10px;
-    border-radius: 5px;
-    width: 30%;
-    max-width: 350px;
-    height: 10px;
-    margin-bottom: 30px;
-    border: 0.5;
-    border-color: #333;
-    box-sizing: content-box;
+.search-bar{
     margin-top: 100px;
+    margin-left: 200px;
+    width: 50% !important;
+    height: 20px;
+    border-radius: 5px;
+    border: 0.5;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
-#search-button{
+.search-button{
     margin-left: 5px;
     box-sizing: content-box;
     padding: 5px 10px;
@@ -46,12 +43,12 @@
 }
 
 .card{
-    margin-bottom: 60px;
+    margin-bottom: 10px;
     width: 30%;
     height: 100%;
     border-radius: 5px;
     overflow: hidden;
-    margin-left: 30px;
+    margin-left: 20px;
     box-shadow: 0 0 6px rgba(0,0, 0, 0.1);
 }
 .card img{
@@ -116,3 +113,4 @@
         margin-left: 0;
     }
 }
+

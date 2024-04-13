@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './PlanTrip.css';
 import flights from './FlightData';
-import {Link} from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const places = ["Dubai","New York","Canada","Greenland","Maldives","India","Malaysia","Singapore","London"]
 
@@ -16,6 +16,7 @@ const PlanTrip = () => {
     const [filteredFlights, setFilteredFlights] = useState([]);
     const [filteredFrom,setFilteredFrom] = useState(places);
     const [filteredTo,setFilteredTo] = useState(places);
+    const [isUser, setIsUser] = useState(false);
 
     // Get current date in yyyy-MM-dd format
     function getCurrentDate() {
@@ -24,37 +25,83 @@ const PlanTrip = () => {
         return formattedDate;
     }
 
+    useEffect(() => {
+        const isAuthenticated = Cookies.get('email') !== undefined;
+        setIsUser(isAuthenticated);
+    }, []);
+
+    const handleConfirmButtonClick = () => {
+        const emailCookie = Cookies.get('email')!==undefined;
+        console.log(emailCookie);
+        if (!emailCookie) {
+            // Email cookie does not exist, redirect to sign-in page
+            handlePaymentConfirmation()
+        } else {
+            // Email cookie exists, proceed with payment confirmation
+            window.location.href = 'http://localhost:3000/signin';
+        }
+    };
+    
+
     // Handle form submission
+    const handleFlightSearch = async () => {
+        try {
+            let filtered = [];
+            if (tripType === 'oneway') {
+                filtered = flights.filter(flight =>
+                    flight.from === selectedFrom && flight.to === selectedTo && flight.date === travelDate
+                );
+            } else {
+                const outboundFlights = flights.filter(flight =>
+                    flight.from === selectedFrom && flight.to === selectedTo && flight.date === travelDate
+                );
+                filtered = outboundFlights;
+            }
+            setFilteredFlights(filtered);
+        } catch (err) {
+            console.log("Flight search unsuccessful....", err);
+        }
+    };
+
+    const handlePaymentConfirmation = async () => {
+        
+        try {
+            const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
+            const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
+            window.location.href = 'http://localhost:3001/pay' + queryString;
+        } catch (err) {
+            console.log("Payment confirmation unsuccessful....", err);
+        }
+    };
+    
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        let filtered = [];
-        if (tripType === 'oneway') {
-            filtered = flights.filter(flight =>
-                flight.from === selectedFrom && flight.to === selectedTo && flight.date === travelDate
-            );
-            console.log(filteredFlights)
-        } else {
-            // For return trip, filter outbound and return flights
-            const outboundFlights = flights.filter(flight =>
-                flight.from === selectedFrom && flight.to === selectedTo && flight.date === travelDate
-            );
-            //const returnDateAfterTwoDays = new Date(new Date(travelDate).getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-            const returnFlights = flights.filter(flight =>
-                flight.from === selectedTo && flight.to === selectedFrom
-            );
-            console.log("returned flights: ", returnFlights,"  hellooo  ",returnDate);
-            filtered = outboundFlights
-            console.log(filtered);
+        if (e.target.name === "searchForm") {
+            handleFlightSearch();
         }
-        setFilteredFlights(filtered);
-       
-  
+        else if (e.target.name === "confirmationForm") {
+            try {
+                const emailCookieExists = Cookies.get('email') !== undefined;
+                if (emailCookieExists) {
+                    const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
+                    const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
+                    window.location.href = 'http://localhost:3001/pay' + queryString;
+                } else {
+                    // Redirect to sign-in page
+                    window.location.href = 'http://localhost:3000/signin';
+                }
+            } catch (err) {
+                console.log("Payment confirmation unsuccessful....", err);
+            }
+        }
     };
+
     
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div className="main">
+            <form onSubmit={handleSubmit} name='searchForm' >
+                <div className="mai">
                     <div className='radio'>
                         <input type="radio" name="tripType" value="oneway" checked={tripType === 'oneway'} onChange={() => setTripType('oneway')} />OneWay
                         <input type='radio' name="tripType" value="return" checked={tripType === 'return'} onChange={() => setTripType('return')} />Return <br />
@@ -72,7 +119,7 @@ const PlanTrip = () => {
                     <tbody className='input-group'>
                         <tr>
                         <td>
-                        <select name="fromPlace" value={selectedFrom} onChange={(e) => setSelectedFrom(e.target.value)} className='customSelect'>
+                        <select name="fromPlace" value={selectedFrom}  required onChange={(e) => setSelectedFrom(e.target.value)} className='customSelect'>
                             <option value="">Select The From Location:</option>
                             {
                             filteredFrom.map((option)=>{
@@ -84,7 +131,7 @@ const PlanTrip = () => {
                         </td>
                         <td>
                             
-                        <select name="toPlace" value={selectedTo} onChange={(e) => setSelectedTo(e.target.value)} className='customSelect'>
+                        <select name="toPlace" value={selectedTo} required onChange={(e) => setSelectedTo(e.target.value)} className='customSelect'>
                             <option value="">Select The To Location:</option>
                             {
                                 filteredTo.map((option)=>{
@@ -97,13 +144,13 @@ const PlanTrip = () => {
 
                     <td>
                     
-                        <input type="date" id="travelDate" name="travelDate" value={travelDate} min={travelDate} onChange={(e) => setTravelDate(e.target.value)} className='customSelect'/>
+                        <input type="date" id="travelDate" name="travelDate" required value={travelDate} min={travelDate} onChange={(e) => setTravelDate(e.target.value)} className='customSelect'/>
                     
                     </td>
                     <td>
                     {
                         
-                            <input type="date" id="returnDate" name="returnDate" min={travelDate} value={returnDate} disabled={tripType === 'oneway'} onChange={(e) => setReturnDate(e.target.value)} className='customSelect' />
+                            <input type="date" id="returnDate" name="returnDate" min={travelDate} value={returnDate} disabled={tripType === 'oneway'} onChange={(e) => setReturnDate(e.target.value)} required className='customSelect' />
 
                     }
                     </td>
@@ -124,40 +171,44 @@ const PlanTrip = () => {
             filteredFlights.length > 0 && (
                     <div>
                         {filteredFlights.map((flight,index)=>(
-                            <form action="http://localhost:3001/pay" method='get'>
-                            <table className='resultTable'>
+                            <form action="http://localhost:3001/pay" name="confirmationForm"method='get' onSubmit={handleSubmit}>
+                            <table className='resultTabl'>
                                 <tr key={index}>
                                     <th>Flight Name</th>
-                                    <td><input type="text" name='flightname' value={flight.flightName} className='customSelect' readOnly/></td>
+                                    <td><input type="text" name='flightname' value={flight.flightName} className='customSelec' readOnly/></td>
                                 </tr>
                                 <tr>
                                     <th>From: </th>
-                                    <td><input type="text" name='from' value={flight.from} className='customSelect' readOnly/></td>
+                                    <td><input type="text" name='from' value={flight.from} className='customSelec' readOnly/></td>
                                 </tr>
                                 <tr>
                                     <th>To: </th>
-                                    <td><input type="text" name='to' value={flight.to}  className='customSelect' readOnly/></td>
+                                    <td><input type="text" name='to' value={flight.to}  className='customSelec' readOnly/></td>
                                 </tr>
                                 <tr>
                                     <th>Date: </th>
-                                    <td><input type="travelDate" name='traveldate' className='customSelect' value={travelDate} readOnly/></td>
+                                    <td><input type="travelDate" name='traveldate' className='customSelec' value={travelDate} readOnly/></td>
                                 </tr>
                                 <tr>
                                     {tripType==='return' && <th>Return Date</th>}
-                                    {tripType==='return' && <td><input type="date" className='customSelect' name='returnDate' value={returnDate} readOnly/></td>}
+                                    {tripType==='return' && <td><input type="date" className='customSelec' name='returnDate' value={returnDate} readOnly/></td>}
                                 </tr>
                                 <tr>
                                    <th>No of Tickets: </th>
-                                   <td><input type="text" name='from' className='customSelect' value={numTickets} readOnly/></td>
+                                   <td><input type="text" name='from' className='customSelec' value={numTickets} readOnly/></td>
                                 </tr>
                                 <tr>
                                     <th>Cost: </th>
-                                    {tripType==='oneway' && <td><input type="text" name='oneway' className='customSelect' value={numTickets*flight.cost} readOnly/></td>}
-                                    {tripType==='return' && <td><input type="text" name='return' className='customSelect' value={numTickets*2*flight.cost} readOnly/></td>}
+                                    {tripType==='oneway' && <td><input type="text" name='cost' className='customSelec' value={numTickets*flight.cost} readOnly/></td>}
+                                    {tripType==='return' && <td><input type="text" name='cost' className='customSelec' value={numTickets*2*flight.cost} readOnly/></td>}
+                                </tr>
+                                <tr>
+                                    <th>Trip Type: </th>
+                                    <td><input type="text" name="tripType" value={tripType} className='customSelec' readOnly/></td>
                                 </tr>
                                 <tr>
                                     
-                                    <td ><input type="submit" value="Confirm" name="confirm" className='btn'/></td>
+                                    <td ><input type="submit" value="Confirm" name="confirm" className='bt' onClick={handleConfirmButtonClick}/></td>
                                     
                                 </tr>
                             </table>

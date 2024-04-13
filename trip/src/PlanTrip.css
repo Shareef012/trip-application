@@ -1,91 +1,134 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
-.main {
-    margin-top: 10px; /* Adjust margin-top as needed */
-    margin-left: 100px; /* Keep the sidebar width */
-    margin-right: 20px; /* Add margin to the right side */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+/* Default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
-*{
-    margin-top: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins",sans-serif;
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 150px; /* Adjust as needed */
+  height: 30px; /* Adjust as needed */
+  padding: 5px; /* Adjust as needed */
+  font-size: 14px; /* Adjust as needed */
 }
-
-.location{
-    display: flex;
-    gap: 60px;
-    flex-wrap: wrap;
-    max-width: 1000px;
-    margin-left: 300px;
-    margin-top:10px;
-}
-
-.radio{
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1000px;
-    margin-left: 320px;
-    margin-top:10px;
-    padding-bottom: 10px;
+.mai {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
-
-
-.resultTable{
-    margin-top: 20px;
-    margin-left: 100px;
-    text-align: left;
-    padding-top: 10px;
-    box-shadow: 0 0 10px rgba(0,0, 0, 0.1);
-    padding-right: 10px;
-    border-radius: 5px;
+.container {
+  max-width: 700px; /* Adjust as needed */
+  margin: 0 auto; /* Center the container */
+}
+.customSelect {
+  width: 200px; /* Adjust as needed */
+  height: 30px; /* Adjust as needed */
+  font-size: 10px; /* Adjust as needed */
 }
 
-.query .print{
-    text-align: left;
-    gap: 30px;
-    border-spacing: 40px;
-    padding-bottom: 8px;
-    padding-left: 40px;
-}
-td,th{
-    padding-left: 20px;
-    padding-bottom: 8px;
 
-}
-.btn{
-    display: flex;
-    justify-content: center;
-    width: 70px;
-    height: 30px;
-    color: white;
-    background-color: #333;
-    font-family: "Poppins",sans-serif;
-    border-radius: 5px;
-    border-collapse: collapse;
-    cursor: pointer;
-    margin-left: 70px;
-    align-items: center;
+.resultTabl {
+  margin-top: 20px;
+  margin-left: 20px;
+  text-align: left;
+  padding-top: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-right: 0px;
+  border-radius: 5px;
+ 
 }
 
-.customSelect{
-    width: 200px;
-    height: 30px !important;
-    font-size: 15px;
-    font-family: "Poppins",sans-serif;
-    border: none;
+.query {
+  margin-bottom: 20px;
 }
-.search{
-    width:70px;
-    height: 30px;
-    background-color: #333;
-    color: white;
-    font-family: "Poppins",sans-serif;
-    border-radius: 5px;
-    border-collapse: collapse;
-    cursor: pointer;
-    
+
+.location {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  max-width: 700px;
+  margin-left: 300px;
+  margin-top: 10px;
 }
+
+.radio {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin-left: 320px;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+.query .print {
+  text-align: left;
+  gap: 30px;
+  border-spacing: 40px;
+  padding-bottom: 8px;
+  padding-left: 40px;
+}
+
+td,
+th {
+  padding: 0px 0px;
+  font-size: 15px;
+}
+
+.bt {
+  display: flex;
+  justify-content: center;
+  width: 70px;
+  height: 30px;
+  color: white;
+  background-color: #333;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px;
+  border-collapse: collapse;
+  cursor: pointer;
+  margin-left: 70px;
+  align-items: center;
+}
+
+.customSelec {
+  width: 200px;
+  height: 30px !important;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  border: none;
+
+}
+
+.search {
+  width: 70px;
+  height: 30px;
+  background-color: #333;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px;
+  border-collapse: collapse;
+  cursor: pointer;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .customSelect {
+    font-size: 12px;
+    height: 24px;
+  }
+
+  .search {
+    width: 60px;
+    height: 24px;
+  }
+}
+
+
