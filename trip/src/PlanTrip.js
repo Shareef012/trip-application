@@ -203,7 +203,7 @@ const PlanTrip = () => {
             filteredFlights.length > 0 && (
                     <div>
                         {filteredFlights.map((flight,index)=>(
-                            <form name="confirmationForm" method='get' onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} name="confirmationForm" >
                             <table className='resultTabl'>
                                 <tr key={index}>
                                     <th>Flight Name</th>
@@ -240,7 +240,7 @@ const PlanTrip = () => {
                                 </tr>
                                 <tr>
                                     
-                                    <td ><input type="submit" value="Confirm" name="confirm" className='bt'/></td>
+                                    <td ><button type="submit" value="Confirm" name="confirm" className='bt'>Confirm</button></td>
                                     
                                 </tr>
                             </table>
