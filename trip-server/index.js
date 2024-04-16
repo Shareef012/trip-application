@@ -331,13 +331,8 @@ app.post('/update-profile', async (req, res) => {
 app.post('/payment', async (req, res) => {
   try {
       const { flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, email } = req.body;
-
-      if (!email) {
-          return res.status(403).send('Unauthorized access');
-      }
-
       // Check if the email exists in the users table
-      const [userResult] = await pool.query(
+      const [userResult] = await connection.promise().query(
           'SELECT * FROM users WHERE email = ?',
           [email]
       );
