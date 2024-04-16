@@ -79,7 +79,7 @@ app.post("/Signin", async (req, res) => {
     if(rows.length>0 && rows[0].password===password){
      // res.status(200).json({ message: "Signin successful...." });
      console.log(rows);
-      res.redirect("https://trip-application.onrender.com/home")
+     res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
     }
     else{
       res.send("check email and password....")

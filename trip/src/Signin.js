@@ -27,7 +27,17 @@ const Signin = () => {
                 // Login successful, update state and trigger redirection
                 setLoginError(null);
                 Cookies.set('email', username);
-                window.location.href="https://trip-application.onrender.com/home"// Set redirect to true after successful login
+                const data = await response.json();
+                console.log('Profile update response:', data);
+                if (data.redirectUrl) {
+                  console.log('Redirecting to:', data.redirectUrl);
+            
+                  // Redirect the user to the specified URL
+                  window.location.href = data.redirectUrl;
+            
+                  // Log a message after redirection
+                  console.log('Redirection completed');
+                }// Set redirect to true after successful login
             } else {
                 // Login failed, display error message
                 setLoginError('Invalid username or password.');
