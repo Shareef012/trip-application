@@ -33,7 +33,7 @@ const Signin = () => {
                   console.log('Redirecting to:', data.redirectUrl);
             
                   // Redirect the user to the specified URL
-                  window.location.href = data.redirectUrl;
+                  <Navigate to="/home" />
             
                   // Log a message after redirection
                   console.log('Redirection completed');
