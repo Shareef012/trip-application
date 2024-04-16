@@ -121,23 +121,23 @@ const PlanTrip = () => {
                     const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
                     const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
                     const paymentString = `https://trip-application-server.onrender.com/payment`;
-                    const response = await fetch(paymentString,{
-                        method : 'POST',
-                        mode : 'cors',
+                    const response = await fetch(paymentString, {
+                        method: 'POST',
+                        mode: 'cors',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                body: JSON.stringify({
-                    flightname: filteredFlights[0].flightName,
-                    from: selectedFrom,
-                    to: selectedTo,
-                    traveldate: travelDate,
-                    returndate:returnDate,
-                    numtickets: numTickets,
-                    cost : cost,
-                    triptype : tripType,
-                    email: Cookies.get('email')
-                })
+                        body: JSON.stringify({
+                            flightname: filteredFlights[0].flightName,
+                            from: selectedFrom,
+                            to: selectedTo,
+                            traveldate: travelDate,
+                            returndate: returnDate,
+                            numtickets: numTickets,
+                            cost: cost,
+                            triptype: tripType,
+                            email: Cookies.get('email')
+                        })
                     });
         
                     if(response.ok){

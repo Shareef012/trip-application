@@ -328,38 +328,36 @@ app.post('/update-profile', async (req, res) => {
 });
 
 
-app.post('/payment', async (req,res)=>{
-    try{
-      const {flightname,from,to,travelDate,returnDate,numTickets,cost,tripType,email} = req.query;
-      
-      if(!email){
-        return res.status(403).send('Unauthorized access');
+app.post('/payment', async (req, res) => {
+  try {
+      const { flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, email } = req.body;
+
+      if (!email) {
+          return res.status(403).send('Unauthorized access');
       }
 
-      const [userResult] = await connection.promise().query(
-        'SELECT * FROM users WHERE email = ?',
-        [email]
+      // Check if the email exists in the users table
+      const [userResult] = await pool.query(
+          'SELECT * FROM users WHERE email = ?',
+          [email]
       );
 
-      // Check if the email exists in the users table
       if (userResult.length > 0) {
-        // Email exists, proceed with inserting into tripdetails table
-        const [result] = await connection.promise().query(
-          `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, email]
-        );
-        console.log('Data inserted into tripdetails table.');
-        res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
-      } 
-
-    }
-    catch(error){
-      console.log(err);
+          // Email exists, proceed with inserting into tripdetails table
+          const [result] = await pool.query(
+              `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, email]
+          );
+          console.log('Data inserted into tripdetails table.');
+          res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
+      } else {
+          res.status(403).send('Unauthorized access');
+      }
+  } catch (error) {
+      console.log(error);
       res.status(500).send("Internal Server Error");
-    }
-})
-
-
+  }
+});
 
 app.listen(3001, (err) => {
   console.log("the server is started listening....");
