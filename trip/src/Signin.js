@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import './signin.css';
+import {useNavigate} from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const Signin = () => {
@@ -9,6 +10,7 @@ const Signin = () => {
     const [loginError, setLoginError] = useState(null);
     const [redirect, setRedirect] = useState(false);
 
+    navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
             const response = await fetch('https://trip-application-server.onrender.com/Signin', {
@@ -33,7 +35,7 @@ const Signin = () => {
                   console.log('Redirecting to:', data.redirectUrl);
                   console.log('Redirection completed');
                   // Redirect the user to the specified URL
-                  return <Navigate to={data.redirectUrl} />;
+                  navigate("/home");
             
                   // Log a message after redirection
                   

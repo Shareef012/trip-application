@@ -205,7 +205,7 @@ app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
             [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, userEmail]
           );
           console.log('Data inserted into tripdetails table.');
-          res.redirect("https://trip-application.onrender.com/home")
+          res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
         } else {
           // Email does not exist in the users table
           console.log('Email does not exist in the users table. Data not inserted into tripdetails table.');
