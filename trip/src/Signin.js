@@ -31,12 +31,12 @@ const Signin = () => {
                 console.log('Profile update response:', data);
                 if (data.redirectUrl) {
                   console.log('Redirecting to:', data.redirectUrl);
-            
+                  console.log('Redirection completed');
                   // Redirect the user to the specified URL
-                  <Navigate to="/home" />
+                  return <Navigate to={data.redirectUrl} />;
             
                   // Log a message after redirection
-                  console.log('Redirection completed');
+                  
                 }// Set redirect to true after successful login
             } else {
                 // Login failed, display error message
