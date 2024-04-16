@@ -118,9 +118,7 @@ const PlanTrip = () => {
             try {
                 const emailCookieExists = Cookies.get('email') !== undefined;
                 if (emailCookieExists) {
-                    const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
-                    const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
-                    window.location.href = 'https://trip-application-server.onrender.com/pay' + queryString;
+                   handlePaymentConfirmation();
                 } else {
                     // Redirect to sign-in page
                    navigate("/signin");
@@ -205,7 +203,7 @@ const PlanTrip = () => {
             filteredFlights.length > 0 && (
                     <div>
                         {filteredFlights.map((flight,index)=>(
-                            <form name="confirmationForm"method='get' onSubmit={handleSubmit}>
+                            <form name="confirmationForm" method='get' onSubmit={handleSubmit}>
                             <table className='resultTabl'>
                                 <tr key={index}>
                                     <th>Flight Name</th>
@@ -242,7 +240,7 @@ const PlanTrip = () => {
                                 </tr>
                                 <tr>
                                     
-                                    <td ><input type="submit" value="Confirm" name="confirm" className='bt' onClick={handleConfirmButtonClick}/></td>
+                                    <td ><input type="submit" value="Confirm" name="confirm" className='bt'/></td>
                                     
                                 </tr>
                             </table>
