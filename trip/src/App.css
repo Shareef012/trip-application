@@ -1,0 +1,33 @@
+/* App.css */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px; /* Adjust as needed */
+  /* Add styles for the content area */
+}
+
+/* App.css */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: white; /* Set the background color to white */
+  color: black; /* Set the text color to black */
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+

@@ -79,6 +79,7 @@ app.post("/Signin", async (req, res) => {
     console.log(rows);
     if(rows.length>0 && rows[0].password===password){
      // res.status(200).json({ message: "Signin successful...." });
+     console.log(rows);
       res.redirect("http://localhost:3000/home")
     }
     else{
@@ -317,7 +318,7 @@ app.post('/update-profile', async (req, res) => {
       }
 
       // Send personal data as JSON response
-      res.redirect("http://localhost:3000/home")
+      res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'http://localhost:3000/home' });
     });
   } catch (err) {
     console.error('Error handling request:', err);
