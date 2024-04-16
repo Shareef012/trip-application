@@ -20,8 +20,7 @@ const CancelTrip = () => {
 
   const fetchData = () => {
     fetch("https://trip-application-server.onrender.com/data", {
-      mode: 'cors',
-      credentials: 'include'
+      mode: 'cors'
     })
       .then((response) => response.json())
       .then((data) => {

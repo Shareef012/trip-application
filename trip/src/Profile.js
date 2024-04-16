@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.css';
+import {useNavigate} from 'react-router-dom';
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -9,12 +10,13 @@ const Profile = () => {
     mobile: ''
   });
 
+  const navigate = useNavigate();
+
   // Function to fetch data from the backend
   const fetchData = () => {
     fetch("https://trip-application-server.onrender.com/personal", {
         method : 'GET',
-      mode: 'cors',
-      credentials: 'include'
+      mode: 'cors'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -66,7 +68,7 @@ const Profile = () => {
           console.log('Redirecting to:', data.redirectUrl);
     
           // Redirect the user to the specified URL
-          window.location.href = data.redirectUrl;
+          navigate("/home");
     
           // Log a message after redirection
           console.log('Redirection completed');

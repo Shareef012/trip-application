@@ -41,7 +41,7 @@ const PlanTrip = () => {
             handlePaymentConfirmation()
         } else {
             // Email cookie exists, proceed with payment confirmation
-            window.location.href = 'https://trip-application.onrender.com/signin';
+           navigate("/signin");
         }
     };
     
@@ -119,11 +119,42 @@ const PlanTrip = () => {
                 const emailCookieExists = Cookies.get('email') !== undefined;
                 if (emailCookieExists) {
                     const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
-                    const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
-                    window.location.href = 'https://trip-application-server.onrender.com/pay' + queryString;
+            const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
+            const paymentString = 'https://trip-application-server.onrender.com/pay'+queryString;
+            const response = await fetch(paymentString,{
+                method : 'GET',
+                mode : 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    flightname: filteredFlights[0].flightName,
+                    from: selectedFrom,
+                    to: selectedTo,
+                    traveldate: travelDate,
+                    returndate:returnDate,
+                    numtickets: numTickets,
+                    cost : cost,
+                    triptype : tripType
+                }),
+            });
+
+            if(response.ok){
+                const data = await response.json();
+                console.log('Profile update response:', data);
+                if (data.redirectUrl) {
+                  console.log('Redirecting to:', data.redirectUrl);
+                  console.log('Redirection completed');
+                  // Redirect the user to the specified URL
+                  navigate("/home");
+            }
+            else{
+                console.log("payment not successfull");
+            }
+        }
                 } else {
                     // Redirect to sign-in page
-                    window.location.href = 'https://trip-application.onrender.com/signin';
+                   navigate("/signin");
                 }
             } catch (err) {
                 console.log("Payment confirmation unsuccessful....", err);

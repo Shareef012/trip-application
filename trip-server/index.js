@@ -11,6 +11,7 @@ const cors = require("cors");
 const session = require('express-session');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
+const Cookies = require('js-cookie');
 
 
 
@@ -79,7 +80,8 @@ app.post("/Signin", async (req, res) => {
     if(rows.length>0 && rows[0].password===password){
      // res.status(200).json({ message: "Signin successful...." });
      console.log(rows);
-     res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
+      Cookies.set("email",username);
+     res.status(200).json({ message: 'Signin successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
     }
     else{
       res.send("check email and password....")
@@ -106,7 +108,7 @@ app.post("/register", async (req, res) => {
     // Check if the query executed successfully
     if (rows.affectedRows > 0) {
       console.log("Registration successful");
-      res.redirect("https://trip-application.onrender.com/signin")
+      res.status(200).json({ message: 'Registeration successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
     } else {
       console.log("Failed to register");
       res.status(500).json({ message: "Failed to register" });

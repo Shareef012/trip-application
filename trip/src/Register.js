@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Register.css';
+import {useNavigate} from 'react-router-dom';
 
 function Register() {
   const [firstName, setFirstName] = useState('');
@@ -10,6 +11,8 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mobile, setMobile] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
@@ -31,7 +34,7 @@ function Register() {
 
     if(response.ok){
         console.log("Registration Succesfull")
-        window.location.href='/signin';
+        navigate('/signin');
     }
     else{
         console.log("Not succesfull....");
