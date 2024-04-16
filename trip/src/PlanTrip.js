@@ -120,10 +120,10 @@ const PlanTrip = () => {
                 if (emailCookieExists) {
                     const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
                     const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
-                    const paymentString = 'https://trip-application-server.onrender.com/pay'+queryString;
+                    const paymentString = `https://trip-application-server.onrender.com/pay1`+queryString;
                     const response = await fetch(paymentString,{
                         method : 'GET',
-                        mode : 'cors',
+                        mode : "no-cors",
                         headers: {
                             'Content-Type': 'application/json'
                         }
