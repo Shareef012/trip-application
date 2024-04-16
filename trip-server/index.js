@@ -328,6 +328,38 @@ app.post('/update-profile', async (req, res) => {
 });
 
 
+app.get('/payment', async (req,res)=>{
+    try{
+      const {flightname,from,to,travelDate,returnDate,numTickets,cost,tripType} = req.query;
+      const userEmail = req.cookies.email;
+      if(!userEmail){
+        return res.status(403).send('Unauthorized access');
+      }
+
+      const [userResult] = await connection.promise().query(
+        'SELECT * FROM users WHERE email = ?',
+        [userEmail]
+      );
+
+      // Check if the email exists in the users table
+      if (userResult.length > 0) {
+        // Email exists, proceed with inserting into tripdetails table
+        const [result] = await connection.promise().query(
+          `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, userEmail]
+        );
+        console.log('Data inserted into tripdetails table.');
+        res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
+      } 
+
+    }
+    catch(error){
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+    }
+})
+
+
 
 app.listen(3001, (err) => {
   console.log("the server is started listening....");
