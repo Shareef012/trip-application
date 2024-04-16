@@ -126,17 +126,7 @@ const PlanTrip = () => {
                         mode : 'cors',
                         headers: {
                             'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            flightname: filteredFlights[0].flightName,
-                            from: selectedFrom,
-                            to: selectedTo,
-                            traveldate: travelDate,
-                            returndate:returnDate,
-                            numtickets: numTickets,
-                            cost : cost,
-                            triptype : tripType
-                        }),
+                        }
                     });
         
                     if(response.ok){
