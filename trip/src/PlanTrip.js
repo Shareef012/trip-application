@@ -2,10 +2,13 @@ import React, { useState,useEffect } from 'react';
 import './PlanTrip.css';
 import flights from './FlightData';
 import Cookies from 'js-cookie';
+import {useNavigate} from 'react-router-dom';
 
 const places = ["Dubai","New York","Canada","Greenland","Maldives","India","Malaysia","Singapore","London"]
 
 const PlanTrip = () => {
+
+    const navigate = useNavigate();
     
     const [tripType, setTripType] = useState('oneway');
     const [selectedFrom, setSelectedFrom] = useState('');

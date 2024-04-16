@@ -10,7 +10,7 @@ const Signin = () => {
     const [loginError, setLoginError] = useState(null);
     const [redirect, setRedirect] = useState(false);
 
-    navigate = useNavigate();
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
             const response = await fetch('https://trip-application-server.onrender.com/Signin', {
