@@ -11,7 +11,7 @@ const Signin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-            const response = await fetch('http://localhost:3001/Signin', {
+            const response = await fetch('https://trip-application-server.onrender.com/Signin', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -27,7 +27,7 @@ const Signin = () => {
                 // Login successful, update state and trigger redirection
                 setLoginError(null);
                 Cookies.set('email', username);
-                window.location.href="http://localhost:3000/home"// Set redirect to true after successful login
+                window.location.href="https://trip-application.onrender.com/home"// Set redirect to true after successful login
             } else {
                 // Login failed, display error message
                 setLoginError('Invalid username or password.');

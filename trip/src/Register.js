@@ -14,7 +14,7 @@ function Register() {
   const handleSubmit = async (e) =>{
     e.preventDefault();
     try{
-      const response = await fetch('https://server-trip.onrender.com/register',{
+      const response = await fetch('https://trip-application-server.onrender.com/register',{
         method : 'post',
         headers : {
             'Content-Type' : 'application/json'

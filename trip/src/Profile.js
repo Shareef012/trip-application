@@ -11,7 +11,7 @@ const Profile = () => {
 
   // Function to fetch data from the backend
   const fetchData = () => {
-    fetch("http://localhost:3001/personal", {
+    fetch("https://trip-application-server.onrender.com/personal", {
         method : 'GET',
       mode: 'cors',
       credentials: 'include'
@@ -48,7 +48,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch(`http://localhost:3001/update-profile?firstname=${profileData.firstname}&lastname=${profileData.lastname}&mobile=${profileData.mobile}&email=${profileData.email}`, {
+        const response = await fetch(`https://trip-application-server.onrender.com/update-profile?firstname=${profileData.firstname}&lastname=${profileData.lastname}&mobile=${profileData.mobile}&email=${profileData.email}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

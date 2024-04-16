@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://trip-application.onrender.com',
   methods: ['GET', 'POST','DELETE'],
   credentials: true, // Allow credentials (cookies) to be sent cross-origin
 };
@@ -80,7 +80,7 @@ app.post("/Signin", async (req, res) => {
     if(rows.length>0 && rows[0].password===password){
      // res.status(200).json({ message: "Signin successful...." });
      console.log(rows);
-      res.redirect("http://localhost:3000/home")
+      res.redirect("https://trip-application.onrender.com/home")
     }
     else{
       res.send("check email and password....")
@@ -107,7 +107,7 @@ app.post("/register", async (req, res) => {
     // Check if the query executed successfully
     if (rows.affectedRows > 0) {
       console.log("Registration successful");
-      res.redirect("http://localhost:3000/Signin")
+      res.redirect("https://trip-application.onrender.com/signin")
     } else {
       console.log("Failed to register");
       res.status(500).json({ message: "Failed to register" });
@@ -131,7 +131,7 @@ app.get("/pay", (req, res) => {
     merchantTransactionId: merchantTransactionId,
     merchantUserId: 123,
     amount: parseInt(cost)*100,
-    redirectUrl: `http://localhost:3001/redirect-url/${merchantTransactionId}?flightname=${flightname}&from=${from}&to=${to}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`,
+    redirectUrl: `https://trip-application-server.onrender.com/redirect-url/${merchantTransactionId}?flightname=${flightname}&from=${from}&to=${to}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`,
     redirectMode: "REDIRECT",
     mobileNumber: "9999999999",
     paymentInstrument: {
@@ -206,7 +206,7 @@ app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
             [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, userEmail]
           );
           console.log('Data inserted into tripdetails table.');
-          res.redirect("http://localhost:3000/home")
+          res.redirect("https://trip-application.onrender.com/home")
         } else {
           // Email does not exist in the users table
           console.log('Email does not exist in the users table. Data not inserted into tripdetails table.');
@@ -318,7 +318,7 @@ app.post('/update-profile', async (req, res) => {
       }
 
       // Send personal data as JSON response
-      res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'http://localhost:3000/home' });
+      res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
     });
   } catch (err) {
     console.error('Error handling request:', err);

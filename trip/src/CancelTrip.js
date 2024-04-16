@@ -19,7 +19,7 @@ const CancelTrip = () => {
 
 
   const fetchData = () => {
-    fetch("http://localhost:3001/data", {
+    fetch("https://trip-application-server.onrender.com/data", {
       mode: 'cors',
       credentials: 'include'
     })
@@ -38,7 +38,7 @@ const CancelTrip = () => {
 
   const handleCancel = (flightname) =>{
     const cookieName = getCookie('email');
-    fetch(`http://localhost:3001/datadelete?cookiename=${cookieName}&flightname=${flightname}`,{
+    fetch(`https://trip-application-server.onrender.com/datadelete?cookiename=${cookieName}&flightname=${flightname}`,{
       method :"POST",
       headers : {
         'Content-Type' : 'application/json'
