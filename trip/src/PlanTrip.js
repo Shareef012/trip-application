@@ -123,7 +123,7 @@ const PlanTrip = () => {
                     const paymentString = `https://trip-application-server.onrender.com/pay`+queryString;
                     const response = await fetch(paymentString,{
                         method : 'GET',
-                        mode : 'cors',
+                        mode : 'no-cors',
                         headers: {
                             'Content-Type': 'application/json'
                         }
