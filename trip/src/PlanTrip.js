@@ -109,7 +109,7 @@ const PlanTrip = () => {
     };
     
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (e.target.name === "searchForm") {
             handleFlightSearch();
