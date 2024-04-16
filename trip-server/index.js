@@ -328,17 +328,17 @@ app.post('/update-profile', async (req, res) => {
 });
 
 
-app.get('/payment', async (req,res)=>{
+app.post('/payment', async (req,res)=>{
     try{
-      const {flightname,from,to,travelDate,returnDate,numTickets,cost,tripType} = req.query;
-      const userEmail = req.cookies.email;
-      if(!userEmail){
+      const {flightname,from,to,travelDate,returnDate,numTickets,cost,tripType,email} = req.query;
+      
+      if(!email){
         return res.status(403).send('Unauthorized access');
       }
 
       const [userResult] = await connection.promise().query(
         'SELECT * FROM users WHERE email = ?',
-        [userEmail]
+        [email]
       );
 
       // Check if the email exists in the users table
@@ -346,7 +346,7 @@ app.get('/payment', async (req,res)=>{
         // Email exists, proceed with inserting into tripdetails table
         const [result] = await connection.promise().query(
           `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, userEmail]
+          [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, email]
         );
         console.log('Data inserted into tripdetails table.');
         res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
