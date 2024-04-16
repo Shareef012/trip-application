@@ -19,8 +19,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: 'https://trip-application.onrender.com',
-  methods: ['GET', 'POST','DELETE'],
-  credentials: true, // Allow credentials (cookies) to be sent cross-origin
+  methods: ['GET', 'POST','DELETE'] // Allow credentials (cookies) to be sent cross-origin
 };
 
 
