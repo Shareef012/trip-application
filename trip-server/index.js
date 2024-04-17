@@ -364,7 +364,7 @@ app.post('/profile-data', async (req,res)=>{
   try{
   const {email} = req.query;
   console.log("this is the profile updataion cookie.... "+email);
-  const [userResults] = await connection.execute('select firstname,lastname,mobile,email from users where email = ?',[email],(err,results)=>{
+ await connection.execute('select firstname,lastname,mobile,email from users where email = ?',[email],(err,results)=>{
     if(err){
       res.status(500).json({error: ' it is the eroroor'})
     }
