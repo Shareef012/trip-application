@@ -332,11 +332,6 @@ app.post('/payment', async (req, res) => {
   try {
       const { flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email } = req.query;
 
-      // Validate required parameters
-      if (!flightname || !from_location || !to_location || !traveldate || !numtickets || !cost || !triptype || !email) {
-          return res.status(400).json({ error: 'Missing required parameters' });
-      }
-
       // Check if the email exists in the users table
       const [userResult] = await connection.query(
           'SELECT * FROM users WHERE email = ?',
