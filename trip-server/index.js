@@ -374,7 +374,7 @@ app.post('/profile-data', async (req,res)=>{
  }
 }
 catch(error){
-  console,log("errorororoo"+err);
+  console.log("errorororoo"+err);
 }
 })
 app.listen(3001, (err) => {
