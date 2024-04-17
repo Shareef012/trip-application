@@ -5,7 +5,7 @@ const app = express();
 const axios = require("axios");
 const unqid = require("unqid");
 const sha256 = require("sha256");
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const session = require('express-session');
@@ -280,7 +280,7 @@ app.post('/personal', async (req, res) => {
     }
 
     // Fetch personal data from MySQL
-    connection.query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [email], (err, results) => {
+    connection.promise().query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [email], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');
@@ -308,7 +308,7 @@ app.post('/update-profile', async (req, res) => {
     }
 
     // Fetch personal data from MySQL
-    connection.query('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
+    connection.promise().query('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');
@@ -333,7 +333,7 @@ app.post('/payment', async (req, res) => {
       const { flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email } = req.query;
 
       // Check if the email exists in the users table
-      const [userResult] = await connection.query(
+      const [userResult] = await connection.promise().query(
           'SELECT * FROM users WHERE email = ?',
           [email]
       );
@@ -343,7 +343,7 @@ app.post('/payment', async (req, res) => {
       }
 
       // Email exists, proceed with inserting into tripdetails table
-      const [result] = await connection.query(
+      const [result] = await connection.promise().query(
           `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email]
       );
