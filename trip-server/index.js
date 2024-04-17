@@ -123,7 +123,7 @@ app.post("/register", async (req, res) => {
 const merchantTransactionId = unqid();
 console.log(merchantTransactionId);
 console.log(merchantTransactionId);
-app.get("/pay", (req, res) => {
+app.post("/pay", (req, res) => {
   const endpoint = "/pg/v1/pay";
   const {flightname,from_location,to_location,travelDate,returnDate,numTickets,cost,tripType,email} = req.query
   console.log(req.body+" 12345"+flightname);
@@ -169,7 +169,7 @@ app.get("/pay", (req, res) => {
       console.error(error);
     });
 });
-app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
+app.post("/redirect-url/:merchantTransactionId", async (req, res) => {
   const { merchantTransactionId } = req.params;
   const { flightname, from_location, to_location, travelDate, returnDate, numTickets, cost, tripType,email } = req.query;
 
