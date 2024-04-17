@@ -104,7 +104,7 @@ const Profile = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} method='post'>
         <table className='profiletable'>
           <tr>
             <th rowSpan={1}></th>

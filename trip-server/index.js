@@ -302,7 +302,7 @@ app.post('/personal', async (req, res) => {
 
 app.post('/update-profile', async (req, res) => {
   try {
-    const { firstname, lastname, mobile, email } = req.query;
+    const { firstname, lastname, mobile, email } = req.body;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }
