@@ -274,7 +274,7 @@ app.post('/datadelete', async (req, res) => {
 
 app.post('/personal', async (req, res) => {
   try {
-    const {email} = req.body;
+    const {email} = req.query;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }
@@ -302,7 +302,7 @@ app.post('/personal', async (req, res) => {
 
 app.post('/update-profile', async (req, res) => {
   try {
-    const { email, firstname, lastname, mobile } = req.body;
+    const { firstname, lastname, mobile, email } = req.query;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }

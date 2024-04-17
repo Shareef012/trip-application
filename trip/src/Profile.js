@@ -17,7 +17,10 @@ const Profile = () => {
   const fetchData = () => {
     fetch(`https://trip-application-server.onrender.com/personal?email=${Cookies.get("email")}`, {
         method : 'POST',
-      mode: 'cors'
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+    }
     })
       .then((response) => response.json())
       .then((data) => {
@@ -53,6 +56,7 @@ const Profile = () => {
     try {
         const response = await fetch(`https://trip-application-server.onrender.com/update-profile?firstname=${profileData.firstname}&lastname=${profileData.lastname}&mobile=${profileData.mobile}&email=${profileData.email}`, {
           method: 'POST',
+          mode: 'cors',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -67,12 +71,13 @@ const Profile = () => {
         console.log('Profile update response:', data);
         if (data.redirectUrl) {
           console.log('Redirecting to:', data.redirectUrl);
+          console.log('Redirection completed');
     
           // Redirect the user to the specified URL
           navigate("/home");
     
           // Log a message after redirection
-          console.log('Redirection completed');
+          
         }
       } catch (error) {
         console.log('Error updating profile:', error);
