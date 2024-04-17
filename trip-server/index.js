@@ -274,7 +274,7 @@ app.post('/datadelete', async (req, res) => {
 
 app.post('/personal', async (req, res) => {
   try {
-    const {email} = req.query;
+    const {email} = req.body;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }

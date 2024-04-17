@@ -13,28 +13,43 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  // Function to fetch data from the backend
   const fetchData = () => {
-    fetch(`https://trip-application-server.onrender.com/personal?email=${Cookies.get("email")}`, {
-        method : 'POST',
+    const email = Cookies.get("email");
+    if (!email) {
+      console.error("Email is missing from cookies.");
+      navigate("/signin");
+    }
+  
+    fetch(`https://trip-application-server.onrender.com/personal`, {
+      method: 'POST',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
-    }
+      },
+      body: JSON.stringify({ email : email }) // Send email in the request body
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      if (data && data.length > 0) {
         setProfileData({
-            firstname: data[0].firstname,
-            lastname: data[0].lastname,
-            email: data[0].email,
-            mobile: data[0].mobile
+          firstname: data[0].firstname,
+          lastname: data[0].lastname,
+          email: data[0].email,
+          mobile: data[0].mobile
         });
-      })
-      .catch((error) => console.log(error));
+      } else {
+        console.error("No data found for the email:", email);
+      }
+    })
+    .catch((error) => console.log(error));
   };
+  
 
   // Fetch data on component mount
   useEffect(() => {
