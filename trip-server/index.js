@@ -364,9 +364,10 @@ app.post('/profile-data', async (req,res)=>{
   try{
   const {email} = req.query;
   console.log("this is the profile updataion cookie.... "+email);
- const [result] = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
+ const userData = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
  if(result.length>0){
-  res.status(200).send({message: 'details retrieved succesfully',redirectUrl : 'https://trip-application.onrender.com/home'})
+    const data = userData[0];
+    res.json([data]);
  }
  else{
   res.status(404).send({message:'No Data Found'});
