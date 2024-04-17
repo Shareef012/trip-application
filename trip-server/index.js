@@ -74,7 +74,7 @@ app.post("/Signin", async (req, res) => {
   try {
     const { username, password } = req.body;
     console.log(username+" "+password +"  "+req.body )
-    const [rows,fields] = await connection.promise().query(`SELECT * FROM users WHERE email = '${username}'`);
+    const [rows,fields] = await connection.query(`SELECT * FROM users WHERE email = '${username}'`);
    // console.log(result[0].email +"   "+result[0][1].password);
     console.log(rows);
     if(rows.length>0 && rows[0].password===password){
@@ -100,7 +100,7 @@ app.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, email, password, mobile } = req.body;
     console.log(req.body+"   112345  "+firstName);
-    const [rows, fields] = await connection.promise().query(
+    const [rows, fields] = await connection.query(
       `INSERT INTO users (firstname, lastname, email, password, mobile) VALUES (?, ?, ?, ?, ?)`,
       [firstName, lastName, email, password, mobile]
     );
@@ -229,10 +229,10 @@ app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
 
 app.get('/data' ,async (req,res)=>{
   try{
-      const userEmail = req.cookies.email;
+      const {email} = req.query;
 
 
-      const userData = await connection.promise().query('select * from tripdetails where email=?',[userEmail]);
+      const userData = await connection.query('select * from tripdetails where email=?',[email]);
       if(userData.length===0){
         return res.status(404).json({error:"user data not found...."});
       }
@@ -247,13 +247,13 @@ app.get('/data' ,async (req,res)=>{
 
 app.post('/datadelete', async (req, res) => {
   try {
-    const userEmail = req.cookies.email;
+    
     const cookiename = req.query.cookiename;
     const flightname = req.query.flightname;
-    console.log(userEmail);
+    
 
     if (cookiename) {
-      const [result] = await connection.promise().query('delete from tripdetails where email=? and 	flightname=?',[cookiename,flightname]);
+      const [result] = await connection.query('delete from tripdetails where email=? and 	flightname=?',[cookiename,flightname]);
         console.log(cookiename + " cookie has been deleted!");
 
 
@@ -280,7 +280,7 @@ app.post('/personal', async (req, res) => {
     }
 
     // Fetch personal data from MySQL
-    connection.promise().query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [email], (err, results) => {
+    connection.query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [email], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');
@@ -308,7 +308,7 @@ app.post('/update-profile', async (req, res) => {
     }
 
     // Fetch personal data from MySQL
-    connection.promise().query('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
+    connection.query('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');
@@ -333,7 +333,7 @@ app.post('/payment', async (req, res) => {
       const { flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email } = req.query;
 
       // Check if the email exists in the users table
-      const [userResult] = await connection.promise().query(
+      const [userResult] = await connection.query(
           'SELECT * FROM users WHERE email = ?',
           [email]
       );
@@ -343,7 +343,7 @@ app.post('/payment', async (req, res) => {
       }
 
       // Email exists, proceed with inserting into tripdetails table
-      const [result] = await connection.promise().query(
+      const [result] = await connection.query(
           `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email]
       );

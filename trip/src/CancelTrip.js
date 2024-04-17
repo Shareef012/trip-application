@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import './CancelTrip.css';
+import Cookies from 'js-cookie'
 
 
 const CancelTrip = () => {
@@ -19,7 +20,7 @@ const CancelTrip = () => {
 
 
   const fetchData = () => {
-    fetch("https://trip-application-server.onrender.com/data", {
+    fetch(`https://trip-application-server.onrender.com/data?email=${Cookies.get('email')}`, {
       mode: 'cors'
     })
       .then((response) => response.json())
