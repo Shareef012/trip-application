@@ -274,13 +274,14 @@ app.post('/datadelete', async (req, res) => {
 
 app.post('/personal', async (req, res) => {
   try {
-    const {email} = req.body;
-    if (!email) {
-      return res.status(403).send('Unauthorized access');
-    }
+   // const {email} = req.body;
+   const { email } = req.query;
+    const userEmail = "sks@gmail.com";
+
+    console.log(email+" this is the cookie......")
 
     // Fetch personal data from MySQL
-    connection.query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [email], (err, results) => {
+    connection.query('SELECT firstname, lastname, email, mobile FROM users WHERE email = ?', [userEmail], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');

@@ -15,12 +15,13 @@ const Profile = () => {
 
   const fetchData = () => {
     const email = Cookies.get("email");
+
     if (!email) {
       console.error("Email is missing from cookies.");
       navigate("/signin");
     }
-  
-    fetch(`https://trip-application-server.onrender.com/personal`, {
+    console.log(email+" is is the cookie email");
+    fetch(`https://trip-application-server.onrender.com/personal?email=${email}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -38,10 +39,10 @@ const Profile = () => {
       console.log(data);
       if (data && data.length > 0) {
         setProfileData({
-          firstname: data[0].firstname,
-          lastname: data[0].lastname,
-          email: data[0].email,
-          mobile: data[0].mobile
+          firstname: data.firstname,
+          lastname: data.lastname,
+          email: data.email,
+          mobile: data.mobile
         });
       } else {
         console.error("No data found for the email:", email);
