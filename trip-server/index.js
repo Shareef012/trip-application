@@ -290,6 +290,7 @@ app.post('/personal', async (req, res) => {
       if (results.length === 0) {
         return res.status(404).send('Data not found');
       }
+      console.log(results);
 
       // Send personal data as JSON response
       res.json(results);
@@ -309,7 +310,7 @@ app.post('/update-profile', async (req, res) => {
     }
 
     // Fetch personal data from MySQL
-    connection.query('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
+    connection.execute('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
       if (err) {
         console.error('Error fetching personal data from MySQL:', err);
         return res.status(500).send('Internal server error');
@@ -357,6 +358,27 @@ app.post('/payment', async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
   } 
 });
+
+
+app.post('/profile-data', async (req,res)=>{
+  try{
+  const {email} = req.query;
+  console.log("this is the profile updataion cookie.... "+email);
+  const [userResults] = await connection.execute('select firstname,lastname,mobile,email from users where email = ?',[email],(err,results)=>{
+    if(err){
+      res.status(500).json({error: ' it is the eroroor'})
+    }
+    if(results.length==0){
+      res.status(404).json({err:"data not found"})
+    }
+    console.log("this is the result data....   "+results)
+    res.json(results);
+  })
+}
+catch(error){
+  console,log("errorororoo"+err);
+}
+})
 app.listen(3001, (err) => {
   console.log("the server is started listening....");
 

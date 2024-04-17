@@ -21,7 +21,7 @@ const Profile = () => {
       navigate("/signin");
     }
     console.log(email+" is is the cookie email");
-    fetch(`https://trip-application-server.onrender.com/personal?email=${email}`, {
+    fetch(`https://trip-application-server.onrender.com/profile-data?email=${email}`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -36,7 +36,7 @@ const Profile = () => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      console.log("this is the data retrieved from the api call.......    "+data);
       if (data && data.length > 0) {
         setProfileData({
           firstname: data.firstname,
