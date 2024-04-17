@@ -121,7 +121,7 @@ const PlanTrip = () => {
                     const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
                     const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
                     const paymentString = `https://trip-application-server.onrender.com/payment`;
-                    const response = await fetch(paymentString, {
+                    const response = await fetch('https://trip-application-server.onrender.com/payment', {
                         method: 'POST',
                         mode: 'cors',
                         headers: {
@@ -142,7 +142,7 @@ const PlanTrip = () => {
         
                     if(response.ok){
                         const data = await response.json();
-                        console.log('Profile update response:', data);
+                        console.log('Payment is Successfull response:', data);
                         if (data.redirectUrl) {
                           console.log('Redirecting to:', data.redirectUrl);
                           console.log('Redirection completed');
