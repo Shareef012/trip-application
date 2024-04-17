@@ -13,42 +13,40 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  const fetchData = () => {
-    const email = Cookies.get("email");
+  const fetchData = async () => {
+      try{
+          const email = Cookies.get('email');
+          if(!email){
+            console.log("the Email Cookie is Missing please signin");
+            navigate("/signin")
+          }
 
-    if (!email) {
-      console.error("Email is missing from cookies.");
-      navigate("/signin");
-    }
-    console.log(email+" is is the cookie email");
-    fetch(`https://trip-application-server.onrender.com/profile-data?email=${email}`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email : email }) // Send email in the request body
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+          const response = await fetch(`https://trip-application-server.onrender.com/profile-data?email=${email}`,{
+            method: 'POST',
+            mode: 'cors',
+            headers : {
+              'Content-Type': 'application/json'
+            }
+          })
+
+          if(response.ok){
+            console.log(response);
+            const data = await response.json()
+            console.log("The retrieved data is for profile updatation is...."+data);
+            setProfileData({
+              firstname: data.firstname,
+              lastname: data.lastname,
+              email:data.email,
+              mobile:data.mobile
+            })
+            if(data.redirectUrl){
+              console.log("Redirecting to ... " + data.redirectUrl);
+            }
+          }
       }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("this is the data retrieved from the api call.......    "+data);
-      if (data && data.length > 0) {
-        setProfileData({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          mobile: data.mobile
-        });
-      } else {
-        console.error("No data found for the email:", email);
+      catch(err){
+        console.log(err+"    the has been occured");
       }
-    })
-    .catch((error) => console.log(error));
   };
   
 

@@ -364,16 +364,13 @@ app.post('/profile-data', async (req,res)=>{
   try{
   const {email} = req.query;
   console.log("this is the profile updataion cookie.... "+email);
- await connection.execute('select firstname,lastname,mobile,email from users where email = ?',[email],(err,results)=>{
-    if(err){
-      res.status(500).json({error: ' it is the eroroor'})
-    }
-    if(results.length==0){
-      res.status(404).json({err:"data not found"})
-    }
-    console.log("this is the result data....   "+results)
-    res.json(results);
-  })
+ const [result] = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
+ if(result.length>0){
+  res.status(200).send({message: 'details retrieved succesfully',redirectUrl : 'https://trip-application.onrender.com/home'})
+ }
+ else{
+  res.status(404).send({message:'No Data Found'});
+ }
 }
 catch(error){
   console,log("errorororoo"+err);
