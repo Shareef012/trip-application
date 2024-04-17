@@ -37,7 +37,7 @@ app.use(session({
 }));
 // Database connection
 console.log(process.env.RDS_ENDPOINT);
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host:process.env.RDS_ENDPOINT , 
   port: 3306,
   user: process.env.RDS_USERNAME,
@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-connection.connect((err) => {
+connection.getConnection((err) => {
   if (err) {
     console.log("connection error....", err);
   } else {
