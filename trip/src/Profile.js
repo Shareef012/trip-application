@@ -14,8 +14,8 @@ const Profile = () => {
 
   // Function to fetch data from the backend
   const fetchData = () => {
-    fetch("https://trip-application-server.onrender.com/personal", {
-        method : 'GET',
+    fetch(`https://trip-application-server.onrender.com/personal?email=${Cookies.get("email")}`, {
+        method : 'POST',
       mode: 'cors'
     })
       .then((response) => response.json())

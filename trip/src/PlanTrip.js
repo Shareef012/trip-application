@@ -119,25 +119,14 @@ const PlanTrip = () => {
                 const emailCookieExists = Cookies.get('email') !== undefined;
                 if (emailCookieExists) {
                     const cost = tripType === "oneway" ? numTickets * filteredFlights[0].cost : numTickets * 2 * filteredFlights[0].cost;
-                    const queryString = `?flightname=${filteredFlights[0].flightName}&from=${selectedFrom}&to=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`;
+                    const queryString = `?flightname=${filteredFlights[0].flightName}&from_location=${selectedFrom}&to_location=${selectedTo}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}&email=${Cookies.get('email')}`;
                     const paymentString = `https://trip-application-server.onrender.com/payment`;
-                    const response = await fetch('https://trip-application-server.onrender.com/payment', {
+                    const response = await fetch('https://trip-application-server.onrender.com/payment'+queryString, {
                         method: 'POST',
                         mode: 'cors',
                         headers: {
                             'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            flightname: filteredFlights[0].flightName,
-                            from: selectedFrom,
-                            to: selectedTo,
-                            traveldate: travelDate,
-                            returndate: returnDate,
-                            numtickets: numTickets,
-                            cost: cost,
-                            triptype: tripType,
-                            email: Cookies.get('email')
-                        })
+                        }
                     });
         
                     if(response.ok){

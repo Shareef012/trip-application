@@ -272,9 +272,9 @@ app.post('/datadelete', async (req, res) => {
 });
 
 
-app.get('/personal', async (req, res) => {
+app.post('/personal', async (req, res) => {
   try {
-    const email = req.cookies.email;
+    const {email} = req.body;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }
@@ -330,10 +330,10 @@ app.post('/update-profile', async (req, res) => {
 
 app.post('/payment', async (req, res) => {
   try {
-      const { flightname, from, to, traveldate, returndate, numtickets, cost, triptype, email } = req.body;
+      const { flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email } = req.query;
 
       // Validate required parameters
-      if (!flightname || !from || !to || !traveldate || !numtickets || !cost || !triptype || !email) {
+      if (!flightname || !from_location || !to_location || !traveldate || !numtickets || !cost || !triptype || !email) {
           return res.status(400).json({ error: 'Missing required parameters' });
       }
 
@@ -350,7 +350,7 @@ app.post('/payment', async (req, res) => {
       // Email exists, proceed with inserting into tripdetails table
       const [result] = await connection.query(
           `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [flightname, from, to, traveldate, returndate, numtickets, cost, triptype, email]
+          [flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email]
       );
 
       console.log('Data inserted into tripdetails table.');
