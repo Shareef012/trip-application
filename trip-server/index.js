@@ -125,14 +125,14 @@ console.log(merchantTransactionId);
 console.log(merchantTransactionId);
 app.get("/pay", (req, res) => {
   const endpoint = "/pg/v1/pay";
-  const {flightname,from,to,travelDate,returnDate,numTickets,cost,tripType} = req.query
+  const {flightname,from_location,to_location,travelDate,returnDate,numTickets,cost,tripType,email} = req.query
   console.log(req.body+" 12345"+flightname);
   const payload = {
     merchantId: merchent_id,
     merchantTransactionId: merchantTransactionId,
     merchantUserId: 123,
     amount: parseInt(cost)*100,
-    redirectUrl: `https://trip-application-server.onrender.com/redirect-url/${merchantTransactionId}?flightname=${flightname}&from=${from}&to=${to}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}`,
+    redirectUrl: `https://trip-application-server.onrender.com/redirect-url/${merchantTransactionId}?flightname=${flightname}&from_location=${from_location}&to_location=${to_location}&travelDate=${travelDate}&returnDate=${returnDate}&numTickets=${numTickets}&cost=${cost}&tripType=${tripType}&email=${email}`,
     redirectMode: "REDIRECT",
     mobileNumber: "9999999999",
     paymentInstrument: {
@@ -171,12 +171,12 @@ app.get("/pay", (req, res) => {
 });
 app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
   const { merchantTransactionId } = req.params;
-  const { flightname, from, to, travelDate, returnDate, numTickets, cost, tripType } = req.query;
+  const { flightname, from_location, to_location, travelDate, returnDate, numTickets, cost, tripType,email } = req.query;
 
   // Split the 'from' string into destination and number of tickets
   const [fromDestination, fromNumTickets] = from.split(',');
   const xverify = sha256(`/pg/v1/status/${merchent_id}/${merchantTransactionId}` + salt_key) + "###" + salt_index;
-  console.log(merchantTransactionId + " 12345 " + travelDate + " 123 " + fromNumTickets+"   "+from);
+  console.log(merchantTransactionId + " 12345 " + travelDate + " 123 " + fromNumTickets+"   "+from_location);
   if (merchantTransactionId) {
     try {
       const options = {
@@ -191,7 +191,7 @@ app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
       };
       const response = await axios.request(options);
       console.log(response.data);
-      const userEmail = req.cookies.email;
+      const userEmail =email;
       console.log(userEmail);
       if (response.data.code === 'PAYMENT_SUCCESS') {
         const [userResult] = await connection.promise().query(
@@ -202,9 +202,9 @@ app.get("/redirect-url/:merchantTransactionId", async (req, res) => {
         // Check if the email exists in the users table
         if (userResult.length > 0) {
           // Email exists, proceed with inserting into tripdetails table
-          const [result] = await connection.promise().query(
+          const [result] = await connection.query(
             `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [flightname, from, to, travelDate, returnDate, numTickets, cost, tripType, userEmail]
+            [flightname, from_location, to_location, travelDate, returnDate, numTickets, cost, tripType, userEmail]
           );
           console.log('Data inserted into tripdetails table.');
           res.status(200).json({ message: 'Payment Done successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
@@ -330,8 +330,8 @@ app.post('/update-profile', async (req, res) => {
 
 app.post('/payment', async (req, res) => {
   try {
-      const { flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email } = req.query;
-      console.log(flightname+"   "+from_location+"    "+to_location+"   "+returndate+"   "+traveldate+"  "+ numtickets+"   "+cost+"   "+triptype+" "+"  "+email);
+      const { flightname, from_location, to_location, travelDate, returnDate, numTickets, cost, tripType, email } = req.query;
+      console.log(flightname+"   "+from_location+"    "+to_location+"   "+returnDate+"   "+travelDate+"  "+ numTickets+"   "+cost+"   "+tripType+" "+"  "+email);
 
       // Check if the email exists in the users table
       const [userResult] = await connection.query(
@@ -346,7 +346,7 @@ app.post('/payment', async (req, res) => {
       // Email exists, proceed with inserting into tripdetails table
       const [result] = await connection.query(
           `INSERT INTO tripdetails (flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [flightname, from_location, to_location, traveldate, returndate, numtickets, cost, triptype, email]
+          [flightname, from_location, to_location, travelDate, returnDate, numTickets, cost, tripType, email]
       );
 
       console.log('Data inserted into tripdetails table.');
