@@ -311,7 +311,7 @@ app.post('/update-profile', async (req, res) => {
     console.log(firstname+"  "+lastname+"  "+mobile+"   "+email);
     // Fetch personal data from MySQL
     const [results] = await connection.query('update users set firstname=?,lastname=?,mobile=? where email=?',[firstname,lastname,mobile,email])
-    if (result.affectedRows > 0) {
+    if (results.affectedRows > 0) {
       res.json({ status: 'success',redirectUrl: 'https://trip-application.onrender.com/home' });
     } else {
       res.status(404).send("Data not found");
