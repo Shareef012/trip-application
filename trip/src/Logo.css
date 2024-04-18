@@ -43,7 +43,8 @@
   }
   
   .right-content a:hover {
-    color: #555; /* Change color on hover, adjust as needed */
+    color: #333;
+    background-color: #fff; /* Change color on hover, adjust as needed */
   }
   .right-content {
     margin-right: 20px; /* Adjust the right margin as needed */

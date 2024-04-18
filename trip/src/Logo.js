@@ -2,8 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Logo.css';
+import Cookies from 'js-cookie';
+
 
 const Logo = () => {
+  const emailCookie = Cookies.get('email');
   return (
     <div className="header">
       <div className="left-content">
@@ -15,7 +18,13 @@ const Logo = () => {
         <h1>SKS</h1>
       </div>
       <div className="right-content">
-        <Link to="/signin">Sign In</Link>
+        {emailCookie ? (
+          // Render welcome message with cookie value if 'email' cookie exists
+          <p>Welcome {emailCookie}</p>
+        ) : (
+          // Render a link to the Sign In page if 'email' cookie does not exist
+          <Link to="/signin">Sign In</Link>
+        )}
       </div>
     </div>
   );
