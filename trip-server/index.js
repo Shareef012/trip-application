@@ -365,7 +365,7 @@ app.post('/profile-data', async (req,res)=>{
   const {email} = req.query;
   console.log("this is the profile updataion cookie.... "+email);
  const userData = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
- if(result.length>0){
+ if(userData.length>0){
     const data = userData[0];
     res.json([data]);
  }
