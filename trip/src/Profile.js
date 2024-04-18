@@ -32,12 +32,12 @@ const Profile = () => {
           if(response.ok){
             console.log(response);
             const data = await response.json()
-            console.log("The retrieved data is for profile updatation is...."+data[0]);
+            console.log("The retrieved data is for profile updatation is...."+data);
             setProfileData({
-              firstname: data[0].firstname,
-              lastname: data[0].lastname,
-              email:data[0].email,
-              mobile:data[0].mobile
+              firstname: data.firstname,
+              lastname: data.lastname,
+              email:data.email,
+              mobile:data.mobile
             })
             if(data.redirectUrl){
               console.log("Redirecting to ... " + data.redirectUrl);
