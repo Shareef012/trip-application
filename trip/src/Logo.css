@@ -35,11 +35,16 @@
   .right-content {
     margin-left: auto;
   }
+  .right-content p {
+    color: white;
+    background-color:black ;
+  }
   
   .right-content a {
     text-decoration: none;
     color: #fff; /* Set text color to white */
     transition: color 0.3s; /* Add a smooth transition effect for color changes */
+    background-color: #000000;
   }
   
   .right-content a:hover {
