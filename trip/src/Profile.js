@@ -38,10 +38,10 @@ const Profile = () => {
           console.log("Profile Data:", JSON.stringify(userData));
           console.log("The user data is new: ", JSON.stringify(userData[0]));
           setProfileData({
-            firstname: userData.firstname,
-            lastname: userData.lastname,
-            email: userData.email,
-            mobile: userData.mobile
+            firstname: userData[0].firstname,
+            lastname: userData[0].lastname,
+            email: userData[0].email,
+            mobile: userData[0].mobile
           });
           if (userData.redirectUrl) {
             console.log("Redirecting to ... " + userData.redirectUrl);
