@@ -367,7 +367,7 @@ app.post('/profile-data', async (req,res)=>{
  const userData = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
  if(userData.length>0){
     const data = userData[0];
-    console.log("the retrieved from the api call is...   \n "+data);
+    console.log("the retrieved from the api call is...   \n "+JSON.stringify(data));
     res.json([data]);
  }
  else{
