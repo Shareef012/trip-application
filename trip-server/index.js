@@ -368,7 +368,7 @@ app.post('/profile-data', async (req,res)=>{
  if(userData.length>0){
     const data = userData[0];
     console.log("the retrieved from the api call is...   \n "+data);
-    res.json(data);
+    res.json([data]);
  }
  else{
   res.status(404).send({message:'No Data Found'});
