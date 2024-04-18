@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Profile.css';
-import {useNavigate} from 'react-router-dom';
-import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -14,48 +14,50 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-      try{
-          const email = Cookies.get('email');
-          if(!email){
-            console.log("the Email Cookie is Missing please signin");
-            navigate("/signin")
-          }
-
-          const response = await fetch(`https://trip-application-server.onrender.com/profile-data?email=${email}`,{
-            method: 'POST',
-            mode: 'cors',
-            headers : {
-              'Content-Type': 'application/json'
-            }
-          })
-
-          if(response.ok){
-            console.log(response);
-            const data = await response.json()
-            console.log("The retrieved data is for profile updatation is...."+data[0]);
-            setProfileData({
-              firstname: data[0].firstname,
-              lastname: data[0].lastname,
-              email:data[0].email,
-              mobile:data[0].mobile
-            })
-            if(data.redirectUrl){
-              console.log("Redirecting to ... " + data.redirectUrl);
-            }
-          }
+    try {
+      const email = Cookies.get('email');
+      if (!email) {
+        console.log("The Email Cookie is Missing, please sign in");
+        navigate("/signin");
+        return;
       }
-      catch(err){
-        console.log(err+"    the has been occured");
+
+      const response = await fetch(`https://trip-application-server.onrender.com/profile-data?email=${email}`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        if (Array.isArray(responseData) && responseData.length > 0) {
+          const userData = responseData[0];
+          setProfileData({
+            firstname: userData.firstname,
+            lastname: userData.lastname,
+            email: userData.email,
+            mobile: userData.mobile
+          });
+          if (userData.redirectUrl) {
+            console.log("Redirecting to ... " + userData.redirectUrl);
+          }
+        } else {
+          console.log("No profile data received from the server");
+        }
+      } else {
+        console.error("Failed to fetch profile data. Response status:", response.status);
       }
+    } catch (error) {
+      console.error("Error fetching or parsing profile data:", error);
+    }
   };
-  
 
-  // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Function to handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfileData((prevProfileData) => ({
@@ -64,41 +66,33 @@ const Profile = () => {
     }));
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch(`https://trip-application-server.onrender.com/update-profile?firstname=${profileData.firstname}&lastname=${profileData.lastname}&mobile=${profileData.mobile}&email=${profileData.email}`, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(profileData)
-        });
-      
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-      
-        const data = await response.json();
-        console.log('Profile update response:', data);
-        if (data.redirectUrl) {
-          console.log('Redirecting to:', data.redirectUrl);
-          console.log('Redirection completed');
-    
-          // Redirect the user to the specified URL
-          navigate("/home");
-    
-          // Log a message after redirection
-          
-        }
-      } catch (error) {
-        console.log('Error updating profile:', error);
+      const response = await fetch(`https://trip-application-server.onrender.com/update-profile?firstname=${profileData.firstname}&lastname=${profileData.lastname}&mobile=${profileData.mobile}&email=${profileData.email}`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(profileData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+
+      const data = await response.json();
+      console.log('Profile update response:', data);
+      if (data.redirectUrl) {
+        console.log('Redirecting to:', data.redirectUrl);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   };
 
-  // Fixed photo path
   const photoPath = "trip/profile.jpeg";
 
   return (
