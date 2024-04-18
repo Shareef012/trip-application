@@ -304,25 +304,18 @@ app.post('/personal', async (req, res) => {
 
 app.post('/update-profile', async (req, res) => {
   try {
-    const { firstname, lastname, mobile, email } = req.body;
+    const { firstname, lastname, mobile, email } = req.query;
     if (!email) {
       return res.status(403).send('Unauthorized access');
     }
-
+    console.log(firstname+"  "+lastname+"  "+mobile+"   "+email);
     // Fetch personal data from MySQL
-    connection.execute('update users set firstname=?,lastname=?,mobile=? WHERE email = ?', [firstname,lastname,mobile,email], (err, results) => {
-      if (err) {
-        console.error('Error fetching personal data from MySQL:', err);
-        return res.status(500).send('Internal server error');
-      }
-
-      if (results.length === 0) {
-        return res.status(404).send('Data not found');
-      }
-
-      // Send personal data as JSON response
-      res.status(200).json({ message: 'Profile updated successfully', redirectUrl: 'https://trip-application.onrender.com/home' });
-    });
+    const [results] = await connection.query('update users set firstname=?,lastname=?,mobile=? where email=?',[firstname,lastname,mobile,email])
+    if (result.affectedRows > 0) {
+      res.json({ status: 'success',redirectUrl: 'https://trip-application.onrender.com/home' });
+    } else {
+      res.status(404).send("Data not found");
+    }
   } catch (err) {
     console.error('Error handling request:', err);
     res.status(500).send('Internal server error');

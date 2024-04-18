@@ -86,7 +86,7 @@ const Profile = () => {
       }
 
       const data = await response.json();
-      console.log('Profile update response:', data);
+      console.log('Profile update response:', JSON.stringify(data));
       if (data.redirectUrl) {
         console.log('Redirecting to:', data.redirectUrl);
         navigate("/home");
