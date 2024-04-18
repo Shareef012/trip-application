@@ -360,24 +360,23 @@ app.post('/payment', async (req, res) => {
 });
 
 
-app.post('/profile-data', async (req,res)=>{
-  try{
-  const {email} = req.query;
-  console.log("this is the profile updataion cookie.... "+email);
- const userData = await connection.query(`select firstname,lastname,mobile,email from users where email=?`,[email])
- if(userData.length>0){
-    const data = userData[0];
-    console.log("the retrieved from the api call is...   \n "+JSON.stringify(data));
-    res.json([data]);
- }
- else{
-  res.status(404).send({message:'No Data Found'});
- }
-}
-catch(error){
-  console.log("errorororoo"+error);
-}
-})
+app.post('/profile-data', async (req, res) => {
+  try {
+    const { email } = req.query;
+    console.log("This is the profile updataion cookie.... " + email);
+    const userData = await connection.query(`SELECT firstname, lastname, mobile, email FROM users WHERE email=?`, [email]);
+    if (userData.length > 0) {
+      const data = userData[0];
+      console.log("The data retrieved from the API call is:\n" );
+      res.json([data]);
+    } else {
+      res.status(404).send({ message: 'No Data Found' });
+    }
+  } catch (error) {
+    console.log("Error: " + error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
 app.listen(3001, (err) => {
   console.log("the server is started listening....");
 
