@@ -35,7 +35,8 @@ const Profile = () => {
         if (Array.isArray(responseData) && responseData.length > 0) {
           const userData = responseData[0];
           console.log("the response data is .....\n"+responseData[0]);
-          console.log(userData+"  the 0 zeroo elements are   "+userData[0]);
+          console.log("Profile Data:", JSON.stringify(userData));
+          console.log("The user data is new: ", JSON.stringify(userData[0]));
           setProfileData({
             firstname: userData.firstname,
             lastname: userData.lastname,
